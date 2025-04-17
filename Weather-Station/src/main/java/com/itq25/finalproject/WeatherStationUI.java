@@ -18,6 +18,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -57,9 +58,11 @@ class WeatherStationUI extends JFrame{
 
     List<Double> temperatureToday;
     List<Double> windSpeedToday;
+    List<Double> precipitationToday;
 
     List<Double> temperature_3days;
     List<Double> windSpeed_3days;
+    List<Double> precipitation_3days;
 
     // Display Elements
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -87,6 +90,20 @@ class WeatherStationUI extends JFrame{
     ForecastGraphPanel panel3Days;
     
     private TextField userSelectedCityField;
+
+    // Image for current weather condition
+    private String currentWeatherPicFullPath;
+    JLabel weatherImageJLabel = new JLabel();
+    //private String currentWeatherPicFullPath Name; // = apiCaller.getcurrentWeatherPicFullPath Name();
+    ImageIcon imageIconCurrentWeather = new ImageIcon(); //(currentWeatherPicFullPath);
+    //imageIconCurrentWeather.setImage(imageIconCurrentWeather.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+     // to shown waether inage based on current 'weather code'
+    /*
+    private String currentWeatherPicFullPath;
+    JLabel weatherImageJLabel = new JLabel();
+    ImageIcon imageIconCurrentWeather = new ImageIcon(currentWeatherPicFullPath);
+    weatherImageJLabel.setIcon(imageIconCurrentWeather);
+     */
 
     // background image paths
     String imagePath = "/Users/sreeram/Documents/SreeRam/ITQ-Final Project/ITQ25WeatherStation-1/weather-station/src/main/java/com/itq25/finalproject/images/sunnyday.jpg";
@@ -149,8 +166,12 @@ class WeatherStationUI extends JFrame{
         currentWindDirection = apiCallerDefault.getCurrentWindDirection();
         temperatureToday = apiCallerDefault.getTemperatureToday();
         windSpeedToday = apiCallerDefault.getWindSpeedToday();
+        precipitationToday = apiCallerDefault.getPrecipitationToday();
         temperature_3days = apiCallerDefault.getTemperature_3days();
         windSpeed_3days = apiCallerDefault.getWindSpeed_3days();
+        precipitation_3days = apiCallerDefault.getPrecipitation_3days();
+        currentWeatherPicFullPath = apiCallerDefault.getCodeToPicture();
+
 
         System.out.println("");
         System.out.println(" ########## print at apiCallerDefault ############");
@@ -193,12 +214,15 @@ class WeatherStationUI extends JFrame{
 
                 currentTemperature = apiCallerRefresh.getCurrentTemperature();
                 currentWeather = apiCallerRefresh.getCurrentWeather();
+                currentWeatherPicFullPath = apiCallerDefault.getCodeToPicture();
                 currentWindSpeed = apiCallerRefresh.getCurrentWindSpeed();
                 currentWindDirection = apiCallerRefresh.getCurrentWindDirection();
                 temperatureToday = apiCallerRefresh.getTemperatureToday();
                 windSpeedToday = apiCallerRefresh.getWindSpeedToday();
+                precipitationToday = apiCallerRefresh.getPrecipitationToday();
                 temperature_3days = apiCallerRefresh.getTemperature_3days();
                 windSpeed_3days = apiCallerRefresh.getWindSpeed_3days();
+                precipitation_3days = apiCallerRefresh.getPrecipitation_3days();
 
                 // Update the UI with the new data
                 dateTimeValueField.setText(java.time.LocalDateTime.now().format(formatter));
@@ -206,17 +230,21 @@ class WeatherStationUI extends JFrame{
                 outsideWeatherValueField.setText(currentWeather);
                 windValueField.setText(currentWindSpeed);
                 windDirectionValueField.setText(currentWindDirection);
+                weatherImageJLabel.setIcon(new ImageIcon(new ImageIcon(currentWeatherPicFullPath).getImage().getScaledInstance(100  , 100, Image.SCALE_SMOOTH))); // Update the current weather image
+            
+                // Update the current weather image
+                
 
                 // Remove old panels from the content panel
                 contentPanel.remove(panelToday);
                 contentPanel.remove(panel3Days);
 
                 // Create new panels with updated data
-                panelToday = new ForecastGraphPanel(temperatureToday, windSpeedToday, 1, UnitType[0]);
+                panelToday = new ForecastGraphPanel(temperatureToday, windSpeedToday, precipitationToday, 1, UnitType[0]);
                 panelToday.setBounds(50, 220, 1050, 300);
                 panelToday.setBackground(Color.LIGHT_GRAY);
 
-                panel3Days = new ForecastGraphPanel(temperature_3days, windSpeed_3days, 3, UnitType[0]);
+                panel3Days = new ForecastGraphPanel(temperature_3days, windSpeed_3days, precipitation_3days, 3, UnitType[0]);
                 panel3Days.setBounds(50, 585, 1050, 300);
                 panel3Days.setBackground(Color.LIGHT_GRAY);
 
@@ -230,6 +258,7 @@ class WeatherStationUI extends JFrame{
                 System.out.println("Data refreshed successfully!");
                 System.out.println("tomperatureToday: " + temperatureToday);
                 System.out.println("windSpeedToday: " + windSpeedToday);
+                System.out.println("precipitationToday: " + precipitationToday);
             } catch (IOException | InterruptedException ex) {
                 ex.printStackTrace();
             }
@@ -265,6 +294,15 @@ class WeatherStationUI extends JFrame{
         locationValueField.setEditable(false);
         locationValueField.setText(currentCity + ", " + currentCountry);
         contentPanel.add(locationValueField);
+
+        // Add current weather image
+        //currentWeatherPicFullPath  = new ImageIcon(currentWeatherPicFullPath Name);
+        currentWeatherPicFullPath = apiCallerDefault.getCodeToPicture();
+        
+        // Add weather image to the JLabel
+        weatherImageJLabel.setIcon(new ImageIcon(new ImageIcon(currentWeatherPicFullPath).getImage().getScaledInstance(100  , 100, Image.SCALE_SMOOTH)));
+        weatherImageJLabel.setBounds(650, 50, 100, 100);
+        contentPanel.add(weatherImageJLabel);
 
 
         // Add 'current Weather' field
@@ -316,8 +354,10 @@ class WeatherStationUI extends JFrame{
                 currentWindDirection = apiCallerUnitChange.getCurrentWindDirection();
                 temperatureToday = apiCallerUnitChange.getTemperatureToday();
                 windSpeedToday = apiCallerUnitChange.getWindSpeedToday();
+                precipitationToday = apiCallerUnitChange.getPrecipitationToday();
                 temperature_3days = apiCallerUnitChange.getTemperature_3days();
                 windSpeed_3days = apiCallerUnitChange.getWindSpeed_3days();
+                precipitation_3days = apiCallerUnitChange.getPrecipitation_3days();
 
                 // Update the UI with the new data
                 outsideTemperatureValueField.setText(currentTemperature);
@@ -330,11 +370,11 @@ class WeatherStationUI extends JFrame{
                 contentPanel.remove(panel3Days);
 
                 // Create new panels with updated data
-                panelToday = new ForecastGraphPanel(temperatureToday, windSpeedToday, 1, UnitType[0]);
+                panelToday = new ForecastGraphPanel(temperatureToday, windSpeedToday, precipitationToday, 1, UnitType[0]);
                 panelToday.setBounds(50, 220, 1050, 300);
                 panelToday.setBackground(Color.LIGHT_GRAY);
 
-                panel3Days = new ForecastGraphPanel(temperature_3days, windSpeed_3days, 3, UnitType[0]);
+                panel3Days = new ForecastGraphPanel(temperature_3days, windSpeed_3days, precipitation_3days , 3, UnitType[0]);
                 panel3Days.setBounds(50, 585, 1050, 300);
                 panel3Days.setBackground(Color.LIGHT_GRAY);
 
@@ -358,6 +398,7 @@ class WeatherStationUI extends JFrame{
             System.out.println("currentWeather: " + currentWeather);
             System.out.println("temperatureToday: " + temperatureToday);
             System.out.println("windSpeedToday: " + windSpeedToday);
+            System.out.println("precipitationToday: " + precipitationToday);
             System.out.println("currentWindSpeed: " + currentWindSpeed);
             System.out.println("currentWindDirection: " + currentWindDirection);
             System.out.println("#####################################################");
@@ -433,7 +474,7 @@ class WeatherStationUI extends JFrame{
         contentPanel.add(forecastToday);
         
         // Add the custom panel to the frame, to plot today's temperature forecast
-        panelToday = new ForecastGraphPanel(temperatureToday, windSpeedToday, 1, UnitType[0]);
+        panelToday = new ForecastGraphPanel(temperatureToday, windSpeedToday, precipitationToday, 1, UnitType[0]);
         panelToday.setBounds(50, 220, 1050, 300);
         panelToday.setBackground(Color.LIGHT_GRAY);
         contentPanel.add(panelToday);
@@ -447,7 +488,7 @@ class WeatherStationUI extends JFrame{
         contentPanel.add(forecast3Days);
 
         // Add the custom panel to the frame, to plot 3-days forecast
-        panel3Days = new ForecastGraphPanel(temperature_3days, windSpeed_3days, 3, UnitType[0]);
+        panel3Days = new ForecastGraphPanel(temperature_3days, windSpeed_3days, precipitation_3days, 3, UnitType[0]);
         panel3Days.setBounds(50, 585, 1050, 300);
         panel3Days.setBackground(Color.LIGHT_GRAY);
         contentPanel.add(panel3Days);
@@ -500,8 +541,11 @@ class WeatherStationUI extends JFrame{
                     currentWindDirection = apiCallerWithSelectedCity.getCurrentWindDirection();
                     temperatureToday = apiCallerWithSelectedCity.getTemperatureToday();
                     windSpeedToday = apiCallerWithSelectedCity.getWindSpeedToday();
+                    precipitationToday = apiCallerWithSelectedCity.getPrecipitationToday();
                     temperature_3days = apiCallerWithSelectedCity.getTemperature_3days();
                     windSpeed_3days = apiCallerWithSelectedCity.getWindSpeed_3days();
+                    precipitation_3days = apiCallerWithSelectedCity.getPrecipitation_3days();
+                    currentWeatherPicFullPath = apiCallerWithSelectedCity.getCodeToPicture();
     
                     // Update the UI with the new data
                     //locationValueField.setText(userSelectedCity);
@@ -510,17 +554,19 @@ class WeatherStationUI extends JFrame{
                     outsideWeatherValueField.setText(currentWeather);
                     windValueField.setText(currentWindSpeed);
                     windDirectionValueField.setText(currentWindDirection);
+                    weatherImageJLabel.setIcon(imageIconCurrentWeather);
+                    weatherImageJLabel.setIcon(new ImageIcon(new ImageIcon(currentWeatherPicFullPath).getImage().getScaledInstance(100  , 100, Image.SCALE_SMOOTH)));
            
                     // Remove old panels from the content panel
                     contentPanel.remove(panelToday);
                     contentPanel.remove(panel3Days);
     
                     // Create new panels with updated data
-                    panelToday = new ForecastGraphPanel(temperatureToday, windSpeedToday, 1, UnitType[0]);
+                    panelToday = new ForecastGraphPanel(temperatureToday, windSpeedToday, precipitationToday, 1, UnitType[0]);
                     panelToday.setBounds(50, 220, 1050, 300);
                     panelToday.setBackground(Color.LIGHT_GRAY);
     
-                    panel3Days = new ForecastGraphPanel(temperature_3days, windSpeed_3days, 3, UnitType[0]);
+                    panel3Days = new ForecastGraphPanel(temperature_3days, windSpeed_3days, precipitation_3days , 3, UnitType[0]);
                     panel3Days.setBounds(50, 585, 1050, 300);
                     panel3Days.setBackground(Color.LIGHT_GRAY);
     

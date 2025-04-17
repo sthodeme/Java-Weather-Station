@@ -16,6 +16,7 @@ public class ForecastGraphPanel extends JPanel {
 
     private final List<Double> TempForecastData;
     private final List<Double> WindForecastData;
+    private final List<Double> precipForecastData;
     private final int numberOfDays;
     private final String unitType;
     private final int paddingLeft = 80;  // Increased left padding for labels
@@ -23,11 +24,12 @@ public class ForecastGraphPanel extends JPanel {
     private final int paddingBottom = 50;
     private final int paddingTop = 50;
     private final int pointSize = 6;
-    public ForecastGraphPanel(List<Double> TempForecastData, List<Double> WindForecastData, int numberOfDays, String unit) {
+    public ForecastGraphPanel(List<Double> TempForecastData, List<Double> WindForecastData, List<Double> PrecipitationForecastData, int numberOfDays, String unit) {
         // Constructor for initializing the graph panel
         // Additional setup and customization can be done here in the future
         this.TempForecastData = TempForecastData;
         this.WindForecastData = WindForecastData;
+        this.precipForecastData = PrecipitationForecastData;
         this.numberOfDays = numberOfDays;
         this.unitType = unit;
     }
@@ -44,14 +46,20 @@ public class ForecastGraphPanel extends JPanel {
         int graphWidth = width - (paddingLeft + paddingRight);
         int graphHeight = height - (paddingTop + paddingBottom);
 
-        // Find min and max values for scaling
+        // Find min and max values for Temperature scaling
         double minTemperature = TempForecastData.stream().min(Double::compare).orElse(0.0) - 0.01;
         double maxTemperature = TempForecastData.stream().max(Double::compare).orElse(1.0) + 0.01;
         double tempRange = maxTemperature - minTemperature;
 
+        // Find (min and) max values for Wind Speed scaling
         double minWindSpeed = 0; //WindForecastData.stream().min(Double::compare).orElse(0.0) - 0;
         double maxWindSpeed = WindForecastData.stream().max(Double::compare).orElse(1.0) + 0.01;
         double windRange = maxWindSpeed - minWindSpeed;
+
+        // Find (min and) max values for precipitation scaling
+        double minPrecipitation = 0; //PrecipForecastData.stream().min(Double::compare).orElse(0.0) - 0;
+        double maxPrecipitation = precipForecastData.stream().max(Double::compare).orElse(1.0) + 0.01;
+        double precipRange = maxPrecipitation - minPrecipitation;
 
         // Draw Y grid lines
         g2.setColor(Color.GRAY);
@@ -114,6 +122,7 @@ public class ForecastGraphPanel extends JPanel {
 
         // === Plot Wind Speed Data (Red Line) ===
         g2.setColor(Color.RED);
+        
         for (int i = 0; i < dataSize - 1; i++) {
             int x1 = paddingLeft + i * pointSpacing;
             int y1 = (int) (height - paddingBottom - ((WindForecastData.get(i) - minWindSpeed) / windRange) * graphHeight);
@@ -124,17 +133,30 @@ public class ForecastGraphPanel extends JPanel {
             g2.fillOval(x1 - pointSize / 2, y1 - pointSize / 2, pointSize, pointSize);
         }
 
+        // === Plot Precipitation Data (Green Line) ===
+        g2.setColor(Color.MAGENTA);
+        for (int i = 0; i < dataSize - 1; i++) {
+            int x1 = paddingLeft + i * pointSpacing;
+            int y1 = (int) (height - paddingBottom - ((precipForecastData.get(i) - minPrecipitation) / precipRange) * graphHeight);
+            int x2 = paddingLeft + (i + 1) * pointSpacing;
+            int y2 = (int) (height - paddingBottom - ((precipForecastData.get(i + 1) - minPrecipitation) / precipRange) * graphHeight);
+
+            g2.drawLine(x1, y1, x2, y2);
+            g2.fillOval(x1 - pointSize / 2, y1 - pointSize / 2, pointSize, pointSize);
+        }
+
         // Draw last point
         int lastX = padding + (dataSize - 1) * pointSpacing;
         int lastY = (int) (height - padding - ((TempForecastData.get(dataSize - 1) - minTemperature) / tempRange) * graphHeight);
         //g2.fillOval(lastX - 3, lastY - 3, 6, 6);
 
-
+        /* 
         // Rotate text to align with Y-axis
         g2.rotate(-Math.PI / 2);  // Rotate 90 degrees counterclockwise
         g2.setColor(Color.BLACK);
-        g2.drawString("Temperature / Wind Speed ", -(height - 50) , 20);  // Adjust position
+        g2.drawString("Temperature / Wind Speed / Precipitation", -(height - 50) , 20);  // Adjust position
         g2.rotate(Math.PI / 2);  // Reset rotation
+        */
         
 
         if (numberOfDays == 1) {
@@ -163,11 +185,11 @@ public class ForecastGraphPanel extends JPanel {
 
         // Draw Temperature legend
         g2.setColor(Color.BLUE);
-        g2.fillRect(width - 140, 15, 10, 10);
+        g2.fillRect(width - 140, 10, 10, 10);
         if (unitType.equals("Imperial")) {
-            g2.drawString("Temperature (°F)", width - 125, 25);
+            g2.drawString("Temperature (°F)", width - 125, 20);
         } else {
-            g2.drawString("Temperature (°C)", width - 125, 25);
+            g2.drawString("Temperature (°C)", width - 125, 20);
         }
 
 
@@ -180,11 +202,11 @@ public class ForecastGraphPanel extends JPanel {
 
         // Draw Wind Speed legend
         g2.setColor(Color.RED);
-        g2.fillRect(width - 140, 35, 10, 10);
+        g2.fillRect(width - 140, 25, 10, 10);
         if (unitType.equals("Imperial")) {
-            g2.drawString("Wind Speed (mph)", width - 125, 45);
+            g2.drawString("Wind Speed (mph)", width - 125, 35);
         } else {
-            g2.drawString("Wind Speed (km/h)", width - 125, 45);
+            g2.drawString("Wind Speed (km/h)", width - 125, 35);
         }
        
 
@@ -193,6 +215,21 @@ public class ForecastGraphPanel extends JPanel {
             double value = minWindSpeed + i * (windRange / 5);
             int y = height - padding - i * graphHeight / 5;
             g2.drawString(String.format("%.0f", value), 35, y + 5);
+        }
+
+        // Draw Precipitation legend
+        g2.setColor(Color.MAGENTA);
+        g2.fillRect(width - 140, 40, 10, 10);
+        if (unitType.equals("Imperial")) {
+            g2.drawString("Precipitation (in)", width - 125, 50);
+        } else {
+            g2.drawString("Precipitation (mm)", width - 125, 50);
+        }
+        // Label Y-axis (Precipitation scale)  
+        for (int i = 0; i <= 5; i++) {
+            double value = minPrecipitation + i * (precipRange / 5);
+            int y = height - padding - i * graphHeight / 5;
+            g2.drawString(String.format("%.0f", value), 15, y + 5);
         }
     }
 
