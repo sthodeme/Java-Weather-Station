@@ -116,7 +116,7 @@ class WeatherStationUI extends JFrame{
         //final String[] tempType = {"Celsius"}; // (Celsius or Fahrenheit): Celsius, by default
         //final String[] windSpeedUnit = {"km/h"}; // (km/h or mph): km/h, by default
 
-        JFrame frame = new JFrame("Weather Station                          @linkedin.com/in/srgreddy/");
+        JFrame frame = new JFrame("Weather Station"); //                          @linkedin.com/in/srgreddy/");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         int frameWidth = 1150;
         int frameHeight = 950;
@@ -139,7 +139,7 @@ class WeatherStationUI extends JFrame{
         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 
-        frame.setTitle("Weather Station                          @linkedin.com/in/srgreddy/");
+        frame.setTitle("Weather Station"); //                          @linkedin.com/in/srgreddy/");
         // Load the background image
         this.backgroundImage = new ImageIcon(imagePath).getImage();
 

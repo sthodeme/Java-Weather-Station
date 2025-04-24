@@ -22,7 +22,7 @@ public class ForecastGraphPanel extends JPanel {
     private final int paddingLeft = 80;  // Increased left padding for labels
     private final int paddingRight = 50;
     private final int paddingBottom = 50;
-    private final int paddingTop = 50;
+    private final int paddingTop = 60;
     private final int pointSize = 6;
     public ForecastGraphPanel(List<Double> TempForecastData, List<Double> WindForecastData, List<Double> PrecipitationForecastData, int numberOfDays, String unit) {
         // Constructor for initializing the graph panel
