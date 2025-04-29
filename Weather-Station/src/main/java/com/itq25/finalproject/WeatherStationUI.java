@@ -470,9 +470,9 @@ class WeatherStationUI extends JFrame{
 
         // TextField for 'Today's forecast'
         TextField forecastToday = new TextField();
-        forecastToday.setBounds(50, 195, 250, 20);
+        forecastToday.setBounds(50, 195, 130, 20);
         forecastToday.setEditable(false);
-        forecastToday.setText("Today's Temperature & Wind Forecast");
+        forecastToday.setText("Today's Forecast");
         contentPanel.add(forecastToday);
         
         // Add the custom panel to the frame, to plot today's temperature forecast
@@ -484,9 +484,9 @@ class WeatherStationUI extends JFrame{
 
         // TextField for 'next 3 days Temperature forecast'
         TextField forecast3Days = new TextField();
-        forecast3Days.setBounds(50, 550, 200, 30);
+        forecast3Days.setBounds(50, 550, 130, 30);
         forecast3Days.setEditable(false);
-        forecast3Days.setText("3 Days Temperature Forecast");
+        forecast3Days.setText("3 Days Forecast");
         contentPanel.add(forecast3Days);
 
         // Add the custom panel to the frame, to plot 3-days forecast
