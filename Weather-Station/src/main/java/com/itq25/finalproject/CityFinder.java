@@ -45,11 +45,12 @@ public class CityFinder {
 
         JTextField cityInputField = new JTextField(20);
         JButton searchButton = new JButton("Search");
-        JLabel resultLabel = new JLabel("Enter city name and click search.");
+        JLabel resultLabel = new JLabel("Enter city name and click search.                                     ");
+        dialog.add(resultLabel);
         dialog.add(new JLabel("Place:"));
         dialog.add(cityInputField);
         dialog.add(searchButton);
-        dialog.add(resultLabel);
+        
 
         searchButton.addActionListener(e -> {
             String input = cityInputField.getText().trim();
