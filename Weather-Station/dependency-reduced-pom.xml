@@ -36,48 +36,35 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.1.0</version>
+        <groupId>com.github.wvengen</groupId>
+        <artifactId>proguard-maven-plugin</artifactId>
+        <version>2.7.0</version>
         <executions>
           <execution>
-            <id>proguard-obfuscation</id>
             <phase>package</phase>
             <goals>
-              <goal>run</goal>
+              <goal>proguard</goal>
             </goals>
             <configuration>
-              <target>
-                <java>
-                  <arg />
-                </java>
-              </target>
+              <proguardVersion>7.2.2</proguardVersion>
+              <injar>/Users/sreeram/Documents/SreeRam/ITQ-Final-Project/Self-Executable-Code/Java-Weather-Station/Weather-Station/target/weather-station-1.0-SNAPSHOT-shaded.jar</injar>
+              <outjar>/Users/sreeram/Documents/SreeRam/ITQ-Final-Project/Self-Executable-Code/Java-Weather-Station/Weather-Station/target/weather-station-1.0-SNAPSHOT-obfuscated.jar</outjar>
+              <options>
+                <option>-dontwarn</option>
+                <option>-dontoptimize</option>
+                <option>-keep public class com.itq25.finalproject.StartWS { public static void main(java.lang.String[]); }</option>
+              </options>
             </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-  <repositories>
-    <repository>
-      <id>guardsquare-releases</id>
-      <url>https://maven.guardsquare.com/releases</url>
-    </repository>
-    <repository>
-      <id>central</id>
-      <url>https://repo.maven.apache.org/maven2</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>guardsquare-releases</id>
-      <url>https://maven.guardsquare.com/releases</url>
-    </pluginRepository>
-  </pluginRepositories>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.13.2</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>

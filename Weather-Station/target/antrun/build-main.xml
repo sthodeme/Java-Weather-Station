@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="maven-antrun-" default="main">
-  <target name="main">
-    <java fork="true" jar="/Applications/proguard-7.7.0/lib/proguard.jar">
-      <arg value="@/Users/sreeram/Documents/SreeRam/ITQ-Final Project/Self Executable Code/Java-Weather-Station/Weather-Station/proguard.pro" />
-    </java>
-  </target>
-</project>

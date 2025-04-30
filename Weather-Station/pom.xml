@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
@@ -19,53 +18,33 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-
+    <!-- Your project dependencies -->
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20210307</version>
     </dependency>
-
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.10.1</version>
     </dependency>
-
+    <!-- ProGuard Base -->
     <dependency>
       <groupId>com.guardsquare</groupId>
       <artifactId>proguard-base</artifactId>
-      <version>7.2.0</version>
+      <version>7.2.2</version>
     </dependency>
 
-    <!-- Removed incorrect dependency for proguard-maven-plugin -->
-    </dependencies>
 
-    <repositories>
-      
+  <dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.13.2</version>
+    <scope>test</scope>
+  </dependency>
+</dependencies>
 
-  <repository>
-      <id>guardsquare-releases</id>
-      <url>https://maven.guardsquare.com/releases</url>
-  </repository>
-  <repository>
-      <id>central</id>
-      <url>https://repo.maven.apache.org/maven2</url>
-  </repository>
-</repositories>
-
-<pluginRepositories>
-  <pluginRepository>
-      <id>guardsquare-releases</id>
-      <url>https://maven.guardsquare.com/releases</url>
-  </pluginRepository>
-</pluginRepositories>
 
 
   <build>
@@ -81,7 +60,7 @@
         </configuration>
       </plugin>
 
-      <!-- Shade Plugin to create an executable fat JAR -->
+      <!-- Shade Plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -102,46 +81,31 @@
           </execution>
         </executions>
       </plugin>
-    
-
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-antrun-plugin</artifactId>
-  <version>3.1.0</version>
-  <executions>
-    <execution>
-      <id>proguard-obfuscation</id>
-      <phase>package</phase>
-      <configuration>
-        <target>
-          <java jar="lib/proguard.jar" fork="true">
-            <arg value= "proguard.pro"/>
-          </java>
-        </target>
-      </configuration>
-      <goals>
-        <goal>run</goal>
-      </goals>
-    </execution>
-  </executions>
-</plugin>
 
       <!-- ProGuard Maven Plugin -->
       <plugin>
-        <groupId>com.guardsquare</groupId>
+        <groupId>com.github.wvengen</groupId>
         <artifactId>proguard-maven-plugin</artifactId>
-        <version>7.2.0</version>
+        <version>2.7.0</version>
         <executions>
           <execution>
-            <id>proguard-obfuscation</id>
             <phase>package</phase>
             <goals>
               <goal>proguard</goal>
             </goals>
+            <configuration>
+              <proguardVersion>7.2.2</proguardVersion>
+              <injar>/Users/sreeram/Documents/SreeRam/ITQ-Final-Project/Self-Executable-Code/Java-Weather-Station/Weather-Station/target/weather-station-1.0-SNAPSHOT-shaded.jar</injar>
+              <outjar>/Users/sreeram/Documents/SreeRam/ITQ-Final-Project/Self-Executable-Code/Java-Weather-Station/Weather-Station/target/weather-station-1.0-SNAPSHOT-obfuscated.jar</outjar>
+              <options>
+                <option>-dontwarn</option>
+                <option>-dontoptimize</option>
+                <option>-keep public class com.itq25.finalproject.StartWS { public static void main(java.lang.String[]); }</option>
+              </options>
+            </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-
 </project>
