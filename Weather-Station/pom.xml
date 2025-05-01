@@ -96,8 +96,8 @@
   </executions>
   <configuration>
     <!-- Specify the correct path for the shaded JAR -->
-    <injar>/Users/sreeram/Documents/SreeRam/ITQ-Final-Project/Self-Executable-Code/Java-Weather-Station/Weather-Station/target/weather-station-1.0-SNAPSHOT-shaded.jar</injar>
-    <outjar>/Users/sreeram/Documents/SreeRam/ITQ-Final-Project/Self-Executable-Code/Java-Weather-Station/Weather-Station/target/weather-station-1.0-SNAPSHOT-obfuscated.jar</outjar>
+    <injar>${project.build.directory}/weather-station-1.0-SNAPSHOT-shaded.jar</injar>
+    <outjar>${project.build.directory}/weather-station-1.0-SNAPSHOT-obfuscated.jar</outjar>
     <options>
       <!-- Add any ProGuard options you'd like -->
       <option>-dontwarn</option>

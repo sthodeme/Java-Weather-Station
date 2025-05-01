@@ -139,7 +139,7 @@ class WeatherStationUI extends JFrame{
         frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
 
-        frame.setTitle("Weather Station"); //                          @linkedin.com/in/srgreddy/");
+        frame.setTitle("Weather Station                         @linkedin.com/in/srgreddy/");
         // Load the background image
         this.backgroundImage = new ImageIcon(imagePath).getImage();
 
